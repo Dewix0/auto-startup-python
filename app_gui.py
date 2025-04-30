@@ -32,27 +32,28 @@ screen_height = root.winfo_screenheight()
 center_x=screen_width//2-300
 center_y=screen_height//2-250
 
-#Тестовый вывод
+#конфигурация окна приложения
 root.title("Anystart")
 root.resizable(False, False)    
 root.geometry(f"600x400+{center_x}+{center_y}")
 
-
+#Заголовок
 custom_font = font.Font(size=15, weight="bold")    
 label = Label(text="Run anything on windows startup",font=custom_font,anchor=N) 
 label.pack()
 
-
+#статус бар
 status_var = StringVar()
 status_var.set("Programm is running")
 status_font=font.Font(weight="bold",size=12)
 label_status=Label(textvariable=status_var,font=status_font,fg="blue")
 label_status.pack(anchor=NW)
 
+#окно,где будет указываться путь сохранненых файлов
 listbox =Listbox(root, selectmode=SINGLE)
 listbox.pack(fill=BOTH, expand=True, padx=10, pady=10)
 
-
+#фрейм с кнопками
 button_frame=ttk.Frame(borderwidth=15,relief=SOLID,padding=[10,12])
 
 btn_add = ttk.Button(button_frame,text="Add file",command=add_file)
