@@ -9,7 +9,7 @@ def finish():
  
 def add_file():
     file_path = filedialog.askopenfilename(title="Choose file")
-    status_var.set("Added new file,remember to save")
+    status_var.set("Added new file, remember to save")
     label_status["fg"]="green"
     
     
@@ -62,7 +62,7 @@ btn_add.pack(side=LEFT,padx=5)
 btn_delete=ttk.Button(button_frame,text="Delete file",command=delete_file)
 btn_delete.pack(side=LEFT,padx=5)
 
-btn_save=ttk.Button(button_frame,text="Save file",command=save_file)
+btn_save=ttk.Button(button_frame,text="Save config",command=save_file)
 btn_save.pack(side=LEFT,padx=5)
 
 button_frame.pack(side=BOTTOM)
