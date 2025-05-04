@@ -8,22 +8,25 @@ import os
 programs=[]
 
 #Загрузка сохраненных программ из json
-CONFIG_FILE = os.path.join(os.getenv('DOCUMENTS') or os.path.expanduser('~/Documents'), 'pet_config.json')
-if os.path.exists(CONFIG_FILE):
+CONFIG_FILE = os.path.join(os.getenv('APPDATA'), 'pet_config.json')
+
+def start():
+    global programs
+    if os.path.exists(CONFIG_FILE):
             try:
                 with open(CONFIG_FILE, 'r') as fh:
                     programs = json.load(fh)
             except Exception as e:
-                print(f"Ошибка конфигурации : {str(e)}")
-                
+                print(f"Configuration load failed : {str(e)}")
+    listboxupdater()                
     
 #Сохранение добавленных программ в json              
 def save_configuration():
     try:
-        with open(CONFIG_FILE,'r') as fh:
+        with open(CONFIG_FILE,'w') as fh:
             json.dump(programs, fh)
     except Exception as e:
-        print(f"Ошибка сохранения конфигурации : {str(e)}")
+        print(f"Failed to save conf : {str(e)}")
         
 #Обновление программ в listbox
 def listboxupdater():
@@ -42,7 +45,7 @@ def add_file():
     if file_path:
             programs.append(file_path)
             listboxupdater()
-            status_var.set("Added new file, remember to save")
+            status_var.set("Added new file, remember to save conf")
             label_status["fg"]="green"
     
     
@@ -51,11 +54,12 @@ def delete_file():
     if selection:
         programs.pop(selection[0])
         listboxupdater()
-        status_var.set("File deleted") 
+        status_var.set("File deleted , remember to save conf") 
         label_status["fg"]="red" 
     
 def save_file():
     status_var.set("Configuration saved")
+    save_configuration()
     label_status["fg"]="green"
     
 #Запуска приложения
@@ -107,4 +111,5 @@ button_frame.pack(side=BOTTOM)
 root.protocol("WM_DELETE_WINDOW", finish)
 
 
+start()
 root.mainloop()
