@@ -9,6 +9,15 @@ programs = []
 
 # Загрузка сохраненных программ из json
 CONFIG_FILE = os.path.join(os.getenv("APPDATA"), "pet_app_config.json")
+STARTUP_PATH = os.path.join(
+    os.getenv("APPDATA"),
+    "Microsoft",
+    "Windows",
+    "Start Menu",
+    "Programs",
+    "Startup",
+    "easy_start.bat",
+)
 
 
 def start():
@@ -22,11 +31,22 @@ def start():
     listboxupdater()
 
 
-# Сохранение добавленных программ в json
+def finish():
+    root.destroy()  # ручное закрытие окна и всего приложения
+    print("App closed")
+
+
+# Сохранение добавленных программ в json, а так-же в запускаемый bat файл на старте windows
 def save_configuration():
     try:
         with open(CONFIG_FILE, "w") as fh:
             json.dump(programs, fh)
+            
+        
+        with open(STARTUP_PATH, "w", encoding="cp866") as bt:
+            for program in programs:
+                win_path = program.replace("/", "\\")
+                bt.write(f'start "" "{win_path}"\n')
     except Exception as e:
         print(f"Failed to save conf : {str(e)}")
 
@@ -36,11 +56,6 @@ def listboxupdater():
     listbox.delete(0, END)
     for program in programs:
         listbox.insert(END, program)
-
-
-def finish():
-    root.destroy()  # ручное закрытие окна и всего приложения
-    print("App closed")
 
 
 def add_file():
@@ -126,4 +141,5 @@ root = app_init()
 root.protocol("WM_DELETE_WINDOW", finish)
 start()
 button_init()
+print(programs)
 root.mainloop()
