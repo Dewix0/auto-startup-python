@@ -47,8 +47,12 @@ def add_file():
     
     
 def delete_file():
-    status_var.set("File deleted") 
-    label_status["fg"]="red" 
+    selection=listbox.curselection()
+    if selection:
+        programs.pop(selection[0])
+        listboxupdater()
+        status_var.set("File deleted") 
+        label_status["fg"]="red" 
     
 def save_file():
     status_var.set("Configuration saved")
